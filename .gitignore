@@ -50,3 +50,9 @@ graphify-out/
 
 # AI Engineering assessment file (large binary)
 AI-Engineering-Assessment.pdf
+
+.vercel
+.env*.local
+
+# Claude Code local tooling config (not part of the project)
+.claude/

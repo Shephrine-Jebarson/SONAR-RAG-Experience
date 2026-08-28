@@ -4,12 +4,21 @@ A voice-first Retrieval-Augmented Generation assistant. Upload documents (PDF, T
 
 ---
 
+## Live Deployment
+
+- **App:** https://sonar-rag-experience.vercel.app
+- **API:** https://sonar-rag-backend.onrender.com (`/health`)
+
+The backend is on Render's free tier, which spins down after ~15 minutes idle — the first request after a period of inactivity can take 30–60s to cold-start. Hit `/health` first if demoing live.
+
+---
+
 ## Tech Stack
 
 | Layer | Choice |
 |---|---|
 | Frontend | React 18 + TypeScript + Vite |
-| Backend | Python 3.11 + FastAPI |
+| Backend | Python 3.13 + FastAPI |
 | Vector DB | Qdrant Cloud |
 | Embeddings | `gemini-embedding-001` (768-dim) |
 | Primary LLM | Groq `openai/gpt-oss-120b` |
@@ -25,19 +34,19 @@ A voice-first Retrieval-Augmented Generation assistant. Upload documents (PDF, T
 ## Project Structure
 
 ```
-voice-rag-assistant/
-├── frontend/          # React + Vite (this repo root)
-│   └── src/
-│       ├── components/
-│       ├── hooks/useVoiceEngine.ts
-│       ├── services/apiService.ts
-│       └── App.tsx
+sonar-rag-experience/        # repo root — Vite frontend lives here directly
+├── src/
+│   ├── components/
+│   ├── hooks/useVoiceEngine.ts
+│   ├── services/apiService.ts
+│   └── App.tsx
 ├── backend/
 │   └── app/
 │       ├── routes/    upload.py · urls.py · process.py · ask.py · health.py
 │       ├── services/  extraction.py · chunking.py · embeddings.py
 │       │              vector_store.py · retrieval.py · llm.py · scraper.py
 │       └── config.py
+├── render.yaml         # Render Blueprint for the backend deploy
 └── README.md
 ```
 
