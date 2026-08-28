@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Share Tech Mono', monospace;
+
+    /* Dark charcoal terminal surfaces */
+    --bg-base: #08090c;
+    --bg-raised: #0d0f13;
+    --surface: #12151b;
+    --surface-hover: #171b22;
+    --surface-solid: #12151b;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-strong: rgba(255, 255, 255, 0.13);
+
+    /* Text */
+    --text-primary: #e7eaf0;
+    --text-secondary: #8b93a3;
+    --text-muted: #5c6474;
+
+    /* Accent trio — cyan is the primary console accent */
+    --accent-cyan: #00e5ff;
+    --accent-blue: #3b9eff;
+    --accent-violet: #a78bfa;
+
+    /* State colors */
+    --state-idle: #5c6474;
+    --state-listening: #00e5ff;
+    --state-processing: #a78bfa;
+    --state-speaking: #ffb020;
+    --state-alert: #ff5c5c;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Ambient backdrop: flat charcoal + a faint scanline texture, the console's
+   whole "atmosphere" budget. Cards stay clean and readable on top of it. */
+.app-ambient {
+  position: relative;
+  background-color: var(--bg-base);
+}
+
+/* ::before renders behind all of .app-ambient's real children (header,
+   main, drawer) — the scanline/tint texture AND the edge glow both live
+   here so neither can ever paint on top of real content. */
+.app-ambient::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* Glowing multi-hue margin around the whole viewport */
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 229, 255, 0.16),
+    inset 0 0 70px -12px rgba(0, 229, 255, 0.30),
+    inset 0 0 130px -30px rgba(59, 158, 255, 0.22),
+    inset 0 0 190px -50px rgba(167, 139, 250, 0.20);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    radial-gradient(60rem 34rem at 20% -8%, rgba(0, 229, 255, 0.05), transparent 60%),
+    radial-gradient(50rem 30rem at 85% 6%, rgba(167, 139, 250, 0.035), transparent 62%);
+}
+
+.font-console { font-family: var(--font-mono); }
+.font-humanist { font-family: var(--font-sans); }
+
+/* Card surface — thin technical border, flat charcoal fill, no blur (the
+   reference is a hard-edged console, not a soft glass panel). */
+.glass {
+  background: var(--surface);
+  border: 1px solid rgba(0, 229, 255, 0.16);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.02) inset,
+    0 12px 32px -20px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(0, 229, 255, 0.05),
+    0 0 24px -6px rgba(0, 229, 255, 0.22),
+    0 0 50px -18px rgba(167, 139, 250, 0.16);
+  transition: box-shadow 240ms cubic-bezier(0.4, 0, 0.2, 1), border-color 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
+    0 14px 36px -18px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(0, 229, 255, 0.09),
+    0 0 32px -6px rgba(0, 229, 255, 0.32),
+    0 0 64px -16px rgba(167, 139, 250, 0.22);
+}
+
+.glass-inset {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Primary action gradient */
+.bg-accent-gradient {
+  background-image: linear-gradient(120deg, #00e5ff 0%, #3b9eff 100%);
+}
+
+.text-accent-gradient {
+  background-image: linear-gradient(120deg, #00e5ff, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Focal CTA glow — reserved for the single primary button. */
+.cta-glow {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.25) inset,
+    0 0 24px -4px rgba(0, 229, 255, 0.55),
+    0 8px 24px -10px rgba(0, 229, 255, 0.35);
+}
+.cta-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.35) inset,
+    0 0 32px -4px rgba(0, 229, 255, 0.7),
+    0 10px 28px -10px rgba(0, 229, 255, 0.45);
+}
+
+.transition-smooth {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes halo-breathe {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.06); }
+}
+.animate-halo { animation: halo-breathe 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+
+@keyframes ring-expand {
+  0%   { transform: scale(0.92); opacity: 0.45; }
+  100% { transform: scale(1.32); opacity: 0; }
+}
+.animate-ring { animation: ring-expand 2.6s cubic-bezier(0.2, 0.6, 0.35, 1) infinite; }
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.88); }
+}
+.animate-dot { animation: dot-pulse 1.7s ease-in-out infinite; }
+
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+.animate-drawer-in { animation: drawer-in 280ms cubic-bezier(0.32, 0.72, 0, 1); }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in { animation: fade-in 200ms ease-out; }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 229, 255, 0.4); background-clip: padding-box; }
+
+/* Accessible focus ring */
+*:focus-visible {
+  outline: 2px solid var(--accent-cyan) !important;
+  outline-offset: 2px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-halo,
+  .animate-ring,
+  .animate-dot,
+  .animate-drawer-in,
+  .animate-fade-in {
+    animation: none !important;
+  }
+}

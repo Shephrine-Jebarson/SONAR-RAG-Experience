@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#121417"/>
+  <rect x="2" y="2" width="60" height="60" rx="10" stroke="#2a2e37" stroke-width="2"/>
+  <!-- VU Meter Arc -->
+  <path d="M 12 40 A 24 24 0 0 1 52 40" stroke="#323846" stroke-width="3" stroke-dasharray="2 3"/>
+  <path d="M 12 40 A 24 24 0 0 1 36 20" stroke="#00f0ff" stroke-width="3"/>
+  <!-- Needle -->
+  <line x1="32" y1="44" x2="42" y2="20" stroke="#ffb020" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="32" cy="44" r="4" fill="#1a1d22" stroke="#ffb020" stroke-width="2"/>
+  <!-- Waveform dots -->
+  <circle cx="16" cy="48" r="2" fill="#00f0ff"/>
+  <circle cx="24" cy="48" r="2" fill="#00f0ff"/>
+  <circle cx="32" cy="48" r="2" fill="#00f0ff"/>
+  <circle cx="40" cy="48" r="2" fill="#ffb020"/>
+  <circle cx="48" cy="48" r="2" fill="#ef4444"/>
+</svg>
