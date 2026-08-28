@@ -13,6 +13,7 @@ def test_defaults_when_env_unset(monkeypatch):
     assert settings.qdrant_url == ""
     assert settings.qdrant_collection == "sonar_rag_chunks"
     assert settings.cors_origin_list == [
+        "http://localhost:5174",
         "http://localhost:5173",
         "http://localhost:3000",
     ]

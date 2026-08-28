@@ -108,7 +108,7 @@ def test_build_messages_includes_system_prompt():
     chunks = [_make_chunk("a", "doc.pdf", "Some content.")]
     messages = _build_messages("what is this?", chunks, [])
     assert messages[0]["role"] == "system"
-    assert "answer ONLY" in messages[0]["content"].upper() or "answer only" in messages[0]["content"].lower()
+    assert "using only the information" in messages[0]["content"].lower()
 
 
 def test_build_messages_includes_source_name_in_context():
