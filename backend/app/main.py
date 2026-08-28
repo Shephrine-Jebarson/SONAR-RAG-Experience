@@ -43,16 +43,16 @@ async def lifespan(app: FastAPI):
         http_options={'api_version': 'v1'}
     )
 
-    # Wipe the Qdrant collection on every startup so stale vectors
-    # from previous sessions never bleed into new ones.
+    # Ensure the collection exists — idempotent, never destroys existing data.
+    # Clearing stale vectors between sessions is the frontend's job (DELETE
+    # /reset on page load, see resetOnLoad in App.tsx), not startup's: wiping
+    # here on every process boot broke real deployments where the platform
+    # cold-starts the backend independently of the user's browser session
+    # (e.g. Render's free-tier idle spin-down), silently deleting a user's
+    # just-processed documents on the next request after any idle period.
     try:
         from app.services.vector_store import ensure_collection
-        qdrant = app.state.qdrant_client
-        col = settings.qdrant_collection
-        existing = {c.name for c in qdrant.get_collections().collections}
-        if col in existing:
-            qdrant.delete_collection(col)
-        ensure_collection(qdrant, col)
+        ensure_collection(app.state.qdrant_client, settings.qdrant_collection)
     except Exception:
         pass  # non-fatal — /health will report degraded if Qdrant is down
 
